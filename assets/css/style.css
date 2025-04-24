@@ -1,0 +1,281 @@
+*{
+    font-family: 'Orbitron';
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+@font-face {
+    font-family: myFont;
+    src: url('/assets/fonts/Betron.ttf') format('truetype');
+
+    font-weight:normal;
+    font-style: normal;
+}
+section [class^="container"]{
+    padding: 4rem 2rem;
+}
+@media screen and (min-width: 1024px) {
+    section [class^="container"]{
+        padding: 4rem;
+    }
+    nav [class^="container"]{
+        padding: 0 4rem;
+    }
+}
+section:not(:first-of-type){
+    text-align: center;
+}
+section:nth-child(2n){
+    background-color: #000000;
+}
+
+a{
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+a:hover{
+    color: rgb(255, 255, 255);
+    transition: all 0.5s;
+}
+.navbar {
+    background-color: #ff5440;
+}
+
+.navbar-nav .nav-link {
+    color: rgb(255, 255, 255);
+    font-size: 1.1rem;
+}
+.navbar-nav .nav-link:hover {
+    color: rgb(0, 0, 0);
+    font-size: 1.1rem;
+    transition: all 0.5s;
+
+}
+.navbar-nav .nav-item {
+    padding: 0 1rem;
+}
+.navbar .dropdown-menu {
+    background-color: white;
+}
+.navbar .dropdown-menu a:hover {
+    color: white;
+    background-color: #ff5440;
+}   
+@media screen and (min-width: 1024px) {
+    .navbar-nav .nav-item {
+        padding: 0 1rem;
+    }
+    .navbar-brand{
+        font-size: 1.5rem;
+    }
+}
+.btn-outline-dark:hover {
+    box-shadow: 4px 4px;
+    color: rgb(255, 255, 255);
+    background-color: crimson;
+}
+.btn-outline-dark{
+    background-color: black;
+}
+
+
+section.hero{
+    background-color: #1a1a1a;
+    color: crimson;
+    height: 200vh;
+    background-image: url('../img/bg.jpg') !important;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+section.hero::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200vh;
+    background: rgba(0, 0, 0, 0.5);
+}
+.con{
+    z-index: 3;
+    position: relative;
+}
+section.hero .text {
+    z-index: 2;
+}
+.starting {
+    background-color: #1e1e1e;
+    display: flex;
+    align-items: center;
+    width: 3500px;
+    height: 500px;
+    border: 2px solid #ff5440;
+    border-radius: 10px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    text-align: start;
+    font-size:xx-small;
+}
+.starting .btn{
+    background-color: #ff5440;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.starting .btn:hover{
+    box-shadow: 4px 4px;
+    color: rgb(255, 255, 255);
+    background-color: crimson;
+}
+
+.box{
+    display: flex;
+    align-items: center;
+    background: #1e1e1e;
+    border: 2px solid #ff5440;
+    border-radius: 10px;
+    max-width: 900px;
+    position: static;
+}
+.box .content {
+    flex: 1;
+    color: white;
+    padding: 20px;
+    text-align: start;
+}
+.box button {
+    background-color: #ff5440;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.box button:hover {
+    background-color: crimson;
+    transition: all 0.5s;
+    box-shadow: 4px 4px;
+}
+.box .game-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    gap: 10px;
+}
+.box .game-grid img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 10px;
+    right: 70px;
+    bottom: 5px;
+    padding: 50px;
+    display: flex;
+    gap: 10px;
+}
+
+@media screen and (min-width: 576px) {
+    section.hero {
+        text-align: center;
+    }
+    section.hero img{
+        max-width: 900px;
+        position: relative;
+        bottom: 50px;
+        right: 130px;
+        z-index: 1;
+    }
+
+}
+section.hero img{
+    width: 1000px;
+    height: 100%;
+}
+
+.schedules{
+    background-color: #1a1a1a;
+    color: white;
+}
+
+section.schedules i{
+    font-size: 2rem;
+    margin: 1rem auto 0;
+    border: 2px solid #ff5440;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+section .card{
+    border: 2px solid black;
+    box-shadow: 4px 4px black;
+    max-width: 22rem;
+    margin-inline: auto;
+}
+.miniIcon {
+    width: 100px;
+    height: auto;
+    align-self: center;
+    padding-top: 10px;
+}
+section.news {
+    padding: 60px 0; /* Add padding to the top and bottom */
+    background-color: whitesmoke; /* Light background color */
+}
+
+.news .card {
+    border: none; /* Remove card border */
+    transition: transform 0.2s; /* Add a transition effect */
+}
+
+.news .card:hover {
+    transform: scale(1.05); /* Scale up the card on hover */
+}
+
+.news .card-img-top {
+    height: 200px; /* Set a fixed height for images */
+    object-fit: cover; /* Cover the area without distortion */
+}
+
+@media screen and (min-width: 1024px){
+    section.about .container{
+    width: 60%;
+    }
+}
+
+section.contact .social-media a{
+    padding: 0 0.5rem;
+    font-size: 1.3rem;
+}
+section.contacts{
+    background-color: #1a1a1a;
+}
+
+
+.btn{
+    color: rgb(255, 255, 255);
+}
+
+section.about{
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+}
+
+
+footer{
+    background-color: #ff5440;
+    color: white;
+    text-align: center;
+    padding: 2rem 0;
+}

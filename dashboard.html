@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ranchers&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+        <div class="container-lg">
+            <a class="navbar-brand fw-bold" href="#">D's</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#hero">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Matches
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#dotaModal">DOTA 2</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#valorantModal">VALORANT</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#codmModal">CODM</a></li>
+                            <li><a class="dropdown-item" href="#matches">All Matches</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#news">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contacts">Contacts</a>
+                    </li>
+                </ul>
+                <a class="btn btn-outline-dark" href="#" data-bs-target="modal">CREATE TOURNAMENT</a>
+                <a class="btn btn-outline-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>
+                <a class="btn btn-outline-dark" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">SIGNUP</a>
+            </div>
+        </div>
+    </nav>
+        <!-- DOTA 2 Match Schedule Modal -->
+    <div class="modal fade" id="dotaModal" tabindex="-1" aria-labelledby="dotaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dotaModalLabel">DOTA 2 Match Schedules</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>Match 1: Team A vs Team B - Date: 2025-01-01, Time: 18:00</li>
+                        <li>Match 2: Team C vs Team D - Date: 2025-01-02, Time: 20:00</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VALORANT Match Schedule Modal -->
+    <div class="modal fade" id="valorantModal" tabindex="-1" aria-labelledby="valorantModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="valorantModalLabel">VALORANT Match Schedules</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>Match 1: Team E vs Team F - Date: 2025-01-03, Time: 19:00</li>
+                        <li>Match 2: Team G vs Team H - Date: 2025-01-04, Time: 21:00</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODM Match Schedule Modal -->
+    <div class="modal fade" id="codmModal" tabindex="-1" aria-labelledby="codmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="codmModalLabel">CODM Match Schedules</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>Match 1: Team I vs Team J - Date: 2025-01-05, Time: 17:00</li>
+                        <li>Match 2: Team K vs Team L - Date: 2025-01-06, Time: 19:00</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="handle.php" method="POST">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" name="loginEmail" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="loginPassword" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signupModalLabel">Signup</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="handle.php" method="POST">
+                        <div class="mb-3">
+                            <label for="signupName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="signupName" id="signupName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signupEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" name="signupEmail" id="signupEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signupPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="signupPassword" id="signupPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Signup</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Game Selection Modal -->
+    <div class="modal fade" id="selectGameModal" tabindex="-1" aria-labelledby="selectGameModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="selectGameModalLabel">Select a Game</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <form action="" method="POST">
+                      <div class="mb-3">
+                          <label for="gameSelect" class="form-label">Choose a game:</label>
+                          <select class="form-select" name="gameSelect" id="gameSelect" required>
+                              <option value="" disabled selected>Select a game</option>
+                              <option value="dota">DOTA 2</option>
+                              <option value="valorant">VALORANT</option>
+                              <option value="codm">Call of Duty Mobile</option>
+                              <option value="fortnite">Fortnite</option>
+                              <option value="league">League of Legends</option>
+                          </select>
+                      </div>
+                      <button type="submit" class="btn btn-primary">Confirm Selection</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+    </div>
+    <section class="hero" id="hero">
+        <div class="container-lg con">
+            <div class="row align-items-center">
+                <div class="container-fluid starting">
+                    <div class="col-sm-6 text">
+                        <h1 class="display-2 fw-bold">Esports Tournament</h1>
+                        <p class="text-white">Watch and Register to participate in the most exciting esports tournament of the year!</p>
+                        <p class="text-white">Compete with the best and win amazing prizes.</p>
+                        <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#signupModal"><a>Signup</a></button>
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <img src="./assets/img/hero.png" loading="lazy" id="img1" class="img-fluid" alt="hero">
+                    </div>
+                </div>
+                <div class="container-fluid box">
+                    <div class="content">
+                        <h1 class="text-danger">What are you Playing?</h1>
+                        <p>Select a game to start finding tournaments!</p>
+                        <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#selectGameModal">Select a game ↗</button>
+                    </div>
+                    <div class="game-grid">
+                        <img src="./assets/img/dota-2.png" alt="cover">
+                        <img src="./assets/img/valorant.png" alt="cover">
+                        <img src="./assets/img/codm-removebg-preview.png" alt="cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="schedules shadow-lg p-3 bg-#1a1a1a " id="matches">
+        <div class="container">
+            <h2 class="display-5 fw-bold mb-3">Matches</h2>
+            <div class="row">
+                <div class="col-lg col-sm-6 mt-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="./assets/img/dota-2.png" alt="dota" class="miniIcon">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">DOTA 2</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg col-sm-6 mt-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="./assets/img/valorant.png" alt="dota" class="miniIcon">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">VALORANT</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg col-sm-6 mt-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="./assets/img/codm-removebg-preview.png" alt="dota" class="miniIcon">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">CODM</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="news bg-light" id="news">
+        <div class="container">
+            <h2 class="display-5 fw-bold mb-4 text-danger">Latest News</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="./assets/img/dota-tournament.jpg" class="card-img-top" alt="News Article 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Exciting Tournament Coming Up!</h5>
+                            <p class="card-text">Join us for the upcoming DOTA 2 tournament where top teams will compete for amazing prizes. Don't miss out!</p>
+                            <a href="#" class="btn btn-danger">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="./assets/img/valorant-championship.webp" class="card-img-top" alt="News Article 2">
+                        <div class="card-body">
+                            <h5 class="card-title">VALORANT Championship Results</h5>
+                            <p class="card-text">Congratulations to Team Alpha for winning the VALORANT championship! Check out the highlights from the event.</p>
+                            <a href="#" class="btn btn-danger">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="./assets/img/mlbb.jpg" class="card-img-top" alt="News Article 3">
+                        <div class="card-body">
+                            <h5 class="card-title">New Game Announcements</h5>
+                            <p class="card-text">We are excited to announce new games that will be featured in our upcoming tournaments. Stay tuned for more details!</p>
+                            <a href="#" class="btn btn-danger">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="display-5 fw-bold mb-4 text-danger">About</h2>
+            <p>Welcome to the ultimate esports tournament experience!</p>
+            <p>Our esports tournament is a premier event that brings together the best gamers from around the world. Participants will compete in various popular games, showcasing their skills and strategies to win amazing prizes. Join us to witness thrilling matches, meet fellow gaming enthusiasts, and be a part of an unforgettable experience.</p>
+        </div>
+    </section>
+
+    <section class="contacts" id="contacts">
+        <div class="container">
+            <h2 class="display-5 fw-bold mb-4 text-white">Contacts</h2>
+            <div class="row">
+                <div class="col-sm-4 mt-4 ">
+                    <a href="#">wice098@gmail.com</a>
+                </div>
+                <div class="col-sm-4 mt-4 ">
+                    <div class="social-media">
+                        <a href="https://twitter.com/ErenJae35284730?t=ms_VPebtOsGPQsTjnSSdOQ&s=09"><i class="bi bi-twitter"></i></a>
+                        <a href="https://www.facebook.com/hell.diablo.23?mibextid=ZbWKwL"><i class="bi bi-facebook"></i></a>
+                        <a href="https://instagram.com/i_dariru?igshid=ZGUzMzM3NWJiOQ=="><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-sm-4 mt-4 ">
+                    <a href="#">+639103993277</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center p-1">
+        <p>&copy; 2025 D's Esports Tournament. All rights reserved.</p>
+        <div>
+            <a href="#" class="text-white">Privacy Policy</a> | 
+            <a href="#" class="text-white">Terms of Service</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+    crossorigin="anonymous"></script>
+    
+</body>
+</html>
