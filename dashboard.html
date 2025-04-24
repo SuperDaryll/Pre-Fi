@@ -46,7 +46,7 @@
                         <a class="nav-link" href="#contacts">Contacts</a>
                     </li>
                 </ul>
-                <a class="btn btn-outline-dark" href="#" data-bs-target="modal">CREATE TOURNAMENT</a>
+                <a class="btn btn-outline-dark" href="#" data-bs-toggle="modal" data-bs-target="#selectGameModal">CREATE TOURNAMENT</a>
                 <a class="btn btn-outline-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>
                 <a class="btn btn-outline-dark" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">SIGNUP</a>
             </div>
@@ -123,16 +123,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="handle.php" method="POST">
+                    <form>
                         <div class="mb-3">
                             <label for="loginEmail" class="form-label">Email address</label>
-                            <input type="email" class="form-control" name="loginEmail" id="loginEmail" required>
+                            <input type="email" class="form-control" id="loginEmail">
                         </div>
                         <div class="mb-3">
                             <label for="loginPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="loginPassword" id="loginPassword" required>
+                            <input type="password" class="form-control" id="loginPassword">
                         </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <a href="./index.html"><button type="button" class="btn btn-primary">Login</button></a>
                     </form>
                 </div>
             </div>
@@ -148,20 +148,20 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="handle.php" method="POST">
+                    <form>
                         <div class="mb-3">
                             <label for="signupName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" name="signupName" id="signupName" required>
+                            <input type="text" class="form-control" id="signupName">
                         </div>
                         <div class="mb-3">
                             <label for="signupEmail" class="form-label">Email address</label>
-                            <input type="email" class="form-control" name="signupEmail" id="signupEmail" required>
+                            <input type="email" class="form-control" id="signupEmail">
                         </div>
                         <div class="mb-3">
                             <label for="signupPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="signupPassword" id="signupPassword" required>
+                            <input type="password" class="form-control" id="signupPassword">
                         </div>
-                        <button type="submit" class="btn btn-primary">Signup</button>
+                        <button type="button" class="btn btn-primary">Signup</button>
                     </form>
                 </div>
             </div>
@@ -176,10 +176,10 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                  <form action="" method="POST">
+                  <form>
                       <div class="mb-3">
                           <label for="gameSelect" class="form-label">Choose a game:</label>
-                          <select class="form-select" name="gameSelect" id="gameSelect" required>
+                          <select class="form-select" id="gameSelect">
                               <option value="" disabled selected>Select a game</option>
                               <option value="dota">DOTA 2</option>
                               <option value="valorant">VALORANT</option>
@@ -188,7 +188,7 @@
                               <option value="league">League of Legends</option>
                           </select>
                       </div>
-                      <button type="submit" class="btn btn-primary">Confirm Selection</button>
+                      <button type="button" class="btn btn-primary">Confirm Selection</button>
                   </form>
               </div>
           </div>

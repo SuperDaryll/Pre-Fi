@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Dashboard - Esports Tournament</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --topbar-height: 56px;
+        }
+        
+        body {
+            padding-top: var(--topbar-height);
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: var(--topbar-height);
+            left: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            overflow-y: auto;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-width);
+            transition: all 0.3s;
+        }
+        
+        .stat-card {
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .team-card {
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            margin-bottom: 15px;
+        }
+        
+        .nav-link {
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .nav-link.active {
+            background-color: rgba(220, 53, 69, 0.2);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                left: -var(--sidebar-width);
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar-toggler {
+                display: block !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stat-card .display-4 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler sidebar-toggler d-lg-none me-2" type="button" style="display: none;">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand fw-bold" href="#">D's</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar Toggle for Mobile -->
+    <button class="btn btn-dark d-lg-none sidebar-toggler position-fixed" style="top: 60px; left: 10px; z-index: 1050;">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar bg-dark text-white">
+        <div class="text-center mb-4 p-3">
+            <h5 class="mt-2 mb-1">Username</h5>
+            <p class="text-muted small mb-2">Pro Player</p>
+            <span class="badge bg-danger">Gold Tier</span>
+        </div>
+        <ul class="nav flex-column px-2">
+            <li class="nav-item">
+                <a class="nav-link active" href="#dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            </li>
+        </ul>
+        <div class="px-3 py-2 position-absolute bottom-0 start-0 end-0 bg-dark">
+            <button class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#createTournamentModal">
+                <i class="bi bi-plus-circle"></i> Create Tournament
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="container-fluid p-3 p-md-4">
+            <!-- Welcome Banner -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card bg-dark text-white">
+                        <div class="card-body">
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+                                <div>
+                                    <h2 class="h4 h1-md">Welcome back, Player!</h2>
+                                    <p class="mb-2 mb-md-0">Check your upcoming matches and tournament progress.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card stat-card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-trophy fs-1 text-danger mb-2"></i>
+                            <h5 class="card-title">Tournaments Joined</h5>
+                            <h2 class="display-4">12</h2>
+                            <p class="card-text text-success">+2 this month</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card stat-card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-controller fs-1 text-danger mb-2"></i>
+                            <h5 class="card-title">Matches Played</h5>
+                            <h2 class="display-4">47</h2>
+                            <p class="card-text">Win Rate: <span class="text-success">68%</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card stat-card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-award fs-1 text-danger mb-2"></i>
+                            <h5 class="card-title">Tournaments Won</h5>
+                            <h2 class="display-4">5</h2>
+                            <p class="card-text">Current rank: <span class="text-warning">Gold</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Matches -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0"><i class="bi bi-calendar-event"></i> Upcoming Matches</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Tournament</th>
+                                            <th>Game</th>
+                                            <th class="d-none d-md-table-cell">Opponent</th>
+                                            <th class="d-none d-sm-table-cell">Date & Time</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Winter Championship</td>
+                                            <td><img src="./assets/img/dota-2.png" width="24" alt="DOTA 2" class="me-1"> <span class="d-none d-sm-inline">DOTA 2</span></td>
+                                            <td class="d-none d-md-table-cell">Team Phoenix</td>
+                                            <td class="d-none d-sm-table-cell">Jan 15, 20:00</td>
+                                            <td><span class="badge bg-warning">Upcoming</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Valorant Open</td>
+                                            <td><img src="./assets/img/valorant.png" width="24" alt="VALORANT" class="me-1"> <span class="d-none d-sm-inline">VALORANT</span></td>
+                                            <td class="d-none d-md-table-cell">Team Shadow</td>
+                                            <td class="d-none d-sm-table-cell">Jan 18, 19:30</td>
+                                            <td><span class="badge bg-warning">Upcoming</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>CODM Weekly</td>
+                                            <td><img src="./assets/img/codm-removebg-preview.png" width="24" alt="CODM" class="me-1"> <span class="d-none d-sm-inline">CODM</span></td>
+                                            <td class="d-none d-md-table-cell">Team Elite</td>
+                                            <td class="d-none d-sm-table-cell">Jan 20, 21:00</td>
+                                            <td><span class="badge bg-info">Ready</span></td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="row">
+                <!-- My Tournaments -->
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="card h-100">
+                        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0"><i class="bi bi-trophy"></i> Active Tournaments</h4>
+                             </div>
+                        <div class="card-body">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Winter DOTA 2 League</h5>
+                                        <small>3 days left</small>
+                                    </div>
+                                    <p class="mb-1">Round of 16 - Group B</p>
+                                    <small>Progress: 4/8 matches completed</small>
+                                    <div class="progress mt-2">
+                                        <div class="progress-bar bg-danger" style="width: 50%"></div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Valorant Community Cup</h5>
+                                        <small>1 week left</small>
+                                    </div>
+                                    <p class="mb-1">Group Stage - Week 2</p>
+                                    <small>Progress: 2/5 matches completed</small>
+                                    <div class="progress mt-2">
+                                        <div class="progress-bar bg-danger" style="width: 40%"></div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">CODM Winter Series</h5>
+                                        <small>5 days left</small>
+                                    </div>
+                                    <p class="mb-1">Quarter Finals</p>
+                                    <small>Progress: 6/8 matches completed</small>
+                                    <div class="progress mt-2">
+                                        <div class="progress-bar bg-danger" style="width: 75%"></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Tournament Modal -->
+    <div class="modal fade" id="createTournamentModal" tabindex="-1" aria-labelledby="createTournamentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="createTournamentModalLabel"><i class="bi bi-trophy"></i> Create New Tournament</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="tournamentForm">
+                        <div class="mb-3">
+                            <label for="tournamentName" class="form-label">Tournament Name</label>
+                            <input type="text" class="form-control" id="tournamentName" placeholder="e.g. Winter Championship 2025" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="gameSelect" class="form-label">Game</label>
+                            <select class="form-select" id="gameSelect" required>
+                                <option value="" selected disabled>Select a game</option>
+                                <option value="dota2">DOTA 2</option>
+                                <option value="valorant">VALORANT</option>
+                                <option value="codm">Call of Duty: Mobile</option>
+                                <option value="lol">League of Legends</option>
+                                <option value="csgo">CS:GO</option>
+                            </select>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="startDate" class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="startDate" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="endDate" class="form-label">End Date</label>
+                                <input type="date" class="form-control" id="endDate" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="maxTeams" class="form-label">Maximum Teams</label>
+                            <input type="number" class="form-control" id="maxTeams" min="2" max="32" value="8" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="tournamentFormat" class="form-label">Tournament Format</label>
+                            <select class="form-select" id="tournamentFormat" required>
+                                <option value="single-elimination">Single Elimination</option>
+                                <option value="double-elimination">Double Elimination</option>
+                                <option value="round-robin">Round Robin</option>
+                                <option value="swiss">Swiss System</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="prizePool" class="form-label">Prize Pool (optional)</label>
+                            <input type="text" class="form-control" id="prizePool" placeholder="e.g. $1,000">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="tournamentDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="tournamentDescription" rows="3" placeholder="Describe your tournament..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="submitTournament">Create Tournament</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center p-3 bg-dark text-white">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 D's Esports Tournament. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile sidebar toggle
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarTogglers = document.querySelectorAll('.sidebar-toggler');
+            
+            sidebarTogglers.forEach(toggler => {
+                toggler.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                });
+            });
+            
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth < 992) {
+                    const isClickInsideSidebar = sidebar.contains(event.target);
+                    const isClickOnToggler = Array.from(sidebarTogglers).some(toggler => toggler.contains(event.target));
+                    
+                    if (!isClickInsideSidebar && !isClickOnToggler && sidebar.classList.contains('active')) {
+                        sidebar.classList.remove('active');
+                    }
+                }
+            });
+            
+            // Prevent sidebar from closing when clicking inside
+            sidebar.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+
+            // Set default dates (today and 7 days from now)
+            const today = new Date();
+            const nextWeek = new Date();
+            nextWeek.setDate(today.getDate() + 7);
+
+            document.getElementById('startDate').valueAsDate = today;
+            document.getElementById('endDate').valueAsDate = nextWeek;
+
+            // Handle tournament form submission
+            document.getElementById('submitTournament').addEventListener('click', function() {
+                // Get form values
+                const tournamentName = document.getElementById('tournamentName').value;
+                const gameSelect = document.getElementById('gameSelect').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                const maxTeams = document.getElementById('maxTeams').value;
+                const tournamentFormat = document.getElementById('tournamentFormat').value;
+                const prizePool = document.getElementById('prizePool').value;
+                const tournamentDescription = document.getElementById('tournamentDescription').value;
+                
+                // Basic validation
+                if (!tournamentName || !gameSelect || !startDate || !endDate || !maxTeams || !tournamentFormat) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                // Create tournament object
+                const newTournament = {
+                    id: Date.now(), // Using timestamp as unique ID
+                    name: tournamentName,
+                    game: gameSelect,
+                    startDate: startDate,
+                    endDate: endDate,
+                    maxTeams: maxTeams,
+                    format: tournamentFormat,
+                    prizePool: prizePool,
+                    description: tournamentDescription,
+                    status: 'upcoming',
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Get existing tournaments from localStorage or create empty array
+                const existingTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+                
+                // Add new tournament
+                existingTournaments.push(newTournament);
+                
+                // Save back to localStorage
+                localStorage.setItem('tournaments', JSON.stringify(existingTournaments));
+                
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('createTournamentModal'));
+                modal.hide();
+                
+                // Show success message
+                alert('Tournament created successfully!');
+                
+                // Reset form
+                document.getElementById('tournamentForm').reset();
+                
+                // Set dates again after reset
+                document.getElementById('startDate').valueAsDate = today;
+                document.getElementById('endDate').valueAsDate = nextWeek;
+                
+                // You might want to refresh the tournament list here if you're displaying it
+                // refreshTournamentList();
+            });
+        });
+
+        // Optional function to display tournaments from localStorage
+        function refreshTournamentList() {
+    const tournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+    const activeTournamentsContainer = document.querySelector('.card-body .list-group');
+    
+    // Clear existing content
+    activeTournamentsContainer.innerHTML = '';
+    
+    if (tournaments.length === 0) {
+        activeTournamentsContainer.innerHTML = `
+            <div class="text-center py-4 text-muted">
+                <i class="bi bi-trophy fs-1"></i>
+                <p class="mt-2">No tournaments found</p>
+                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#createTournamentModal">
+                    Create your first tournament
+                </button>
+            </div>
+        `;
+        return;
+    }
+    
+    // Add each tournament to the list
+    tournaments.forEach(tournament => {
+        // Calculate days left (simple calculation)
+        const endDate = new Date(tournament.endDate);
+        const today = new Date();
+        const timeDiff = endDate - today;
+        const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+        
+        // Create a progress percentage (random for demo)
+        const progressPercent = Math.floor(Math.random() * 60) + 20;
+        const matchesCompleted = Math.floor(progressPercent / 10);
+        
+        const tournamentItem = document.createElement('a');
+        tournamentItem.href = '#';
+        tournamentItem.className = 'list-group-item list-group-item-action';
+        tournamentItem.innerHTML = `
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">${tournament.name}</h5>
+                <small>${daysLeft > 0 ? `${daysLeft} days left` : 'Ended'}</small>
+            </div>
+            <p class="mb-1">${getTournamentStage(tournament.format)}</p>
+            <small>Progress: ${matchesCompleted}/8 matches completed</small>
+            <div class="progress mt-2">
+                <div class="progress-bar bg-danger" style="width: ${progressPercent}%"></div>
+            </div>
+        `;
+        
+        activeTournamentsContainer.appendChild(tournamentItem);
+    });
+    
+    // Also update the "Tournaments Joined" count in the stats card
+    document.querySelector('.stat-card:nth-child(1) .display-4').textContent = tournaments.length;
+}
+
+// Helper function to get stage based on tournament format
+function getTournamentStage(format) {
+    const stages = {
+        'single-elimination': 'Round of 16',
+        'double-elimination': 'Upper Bracket',
+        'round-robin': 'Group Stage',
+        'swiss': 'Swiss Round 3'
+    };
+    return stages[format] || 'Group Stage';
+}
+
+// Call the function when the DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    refreshTournamentList();
+    
+    // Also refresh after creating a new tournament
+    document.getElementById('submitTournament').addEventListener('click', function() {
+        setTimeout(refreshTournamentList, 100); // Small delay to ensure localStorage is updated
+    });
+});  
+    </script>
+</body>
+</html>
