@@ -47,8 +47,20 @@
                     </li>
                 </ul>
                 <a class="btn btn-outline-dark" href="#" data-bs-toggle="modal" data-bs-target="#selectGameModal">CREATE TOURNAMENT</a>
-                <a class="btn btn-outline-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>
-                <a class="btn btn-outline-dark" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">SIGNUP</a>
+                <div id="authButtons">
+                    <a class="btn btn-outline-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>
+                    <a class="btn btn-outline-dark" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">SIGNUP</a>
+                </div>
+                <div id="userProfile" style="display: none;">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-dark dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span id="username">User</span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -123,16 +135,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <div id="loginAlert" class="alert" role="alert" style="display: none;"></div>
+                    <form id="loginForm">
                         <div class="mb-3">
                             <label for="loginEmail" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="loginEmail">
+                            <input type="email" class="form-control" id="loginEmail" required>
                         </div>
                         <div class="mb-3">
                             <label for="loginPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="loginPassword">
+                            <input type="password" class="form-control" id="loginPassword" required>
                         </div>
-                        <a href="./index.html"><button type="button" class="btn btn-primary">Login</button></a>
+                        <button type="submit" class="btn btn-primary">Login</button>
                     </form>
                 </div>
             </div>
@@ -148,20 +161,21 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <div id="signupAlert" class="alert" role="alert" style="display: none;"></div>
+                    <form id="signupForm">
                         <div class="mb-3">
                             <label for="signupName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="signupName">
+                            <input type="text" class="form-control" id="signupName" required>
                         </div>
                         <div class="mb-3">
                             <label for="signupEmail" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="signupEmail">
+                            <input type="email" class="form-control" id="signupEmail" required>
                         </div>
                         <div class="mb-3">
                             <label for="signupPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="signupPassword">
+                            <input type="password" class="form-control" id="signupPassword" required>
                         </div>
-                        <button type="button" class="btn btn-primary">Signup</button>
+                        <button type="submit" class="btn btn-primary">Signup</button>
                     </form>
                 </div>
             </div>
@@ -335,5 +349,168 @@
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
     crossorigin="anonymous"></script>
     
+    <script>
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            
+            // Login form submission
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                loginUser(email, password);
+            });
+            
+            // Signup form submission
+            document.getElementById('signupForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                
+                registerUser(name, email, password);
+            });
+            
+            // Logout button click
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                logoutUser();
+            });
+        });
+        
+        // Check if user is logged in
+        function checkLoginStatus() {
+            const currentUser = localStorage.getItem('currentUser');
+            
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                document.getElementById('username').textContent = user.name;
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userProfile').style.display = 'block';
+            } else {
+                document.getElementById('authButtons').style.display = 'block';
+                document.getElementById('userProfile').style.display = 'none';
+            }
+        }
+        
+        // Register a new user
+        function registerUser(name, email, password) {
+            // Get existing users or create empty array
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Check if email already exists
+            const emailExists = users.some(user => user.email === email);
+            
+            if (emailExists) {
+                showAlert('signupAlert', 'Email already registered!', 'danger');
+                return;
+            }
+            
+            // Create new user object
+            const newUser = {
+                id: Date.now().toString(),
+                name: name,
+                email: email,
+                password: password  // In a real app, this should be encrypted
+            };
+            
+            // Add user to array
+            users.push(newUser);
+            
+            // Save updated users array
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Set current user
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            
+            // Show success message
+            showAlert('signupAlert', 'Registration successful!', 'success');
+            
+            // Close modal after short delay and redirect
+            setTimeout(() => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('signupModal'));
+                modal.hide();
+                window.location.href = './index.html';
+            }, 1500);
+        }
+        
+        // Login user
+        function loginUser(email, password) {
+            // Get users from local storage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Find user with matching email and password
+            const user = users.find(user => user.email === email && user.password === password);
+            
+            if (user) {
+                // Set current user
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Show success message
+                showAlert('loginAlert', 'Login successful!', 'success');
+                
+                // Close modal after short delay and redirect to index.html
+                setTimeout(() => {
+                    window.location.href = './index.html';
+                }, 1500);
+            } else {
+                showAlert('loginAlert', 'Invalid email or password!', 'danger');
+            }
+        }
+        
+        // Logout user
+        function logoutUser() {
+            // Remove current user from local storage
+            localStorage.removeItem('currentUser');
+            
+            // Update UI
+            checkLoginStatus();
+            
+            // Create and show toast notification
+            const toastContainer = document.createElement('div');
+            toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
+            toastContainer.style.zIndex = '11';
+            
+            toastContainer.innerHTML = `
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto">D's Esports</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        You have been logged out successfully!
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(toastContainer);
+            
+            const toastElement = toastContainer.querySelector('.toast');
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+            
+            // Remove toast container after toast is hidden
+            toastElement.addEventListener('hidden.bs.toast', function () {
+                toastContainer.remove();
+            });
+        }
+        
+        // Show alert message
+        function showAlert(elementId, message, type) {
+            const alert = document.getElementById(elementId);
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.style.display = 'block';
+            
+            // Hide alert after 3 seconds
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
