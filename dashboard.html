@@ -12,6 +12,78 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ranchers&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --topbar-height: 56px;
+        }
+
+        body {
+            padding-top: var(--topbar-height);
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: var(--topbar-height);
+            left: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            overflow-y: auto;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            transition: all 0.3s;
+        }
+
+        .stat-card {
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .nav-link {
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .nav-link.active {
+            background-color: rgba(220, 53, 69, 0.2);
+        }
+
+        .nav-link i {
+            margin-right: 10px;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                left: -var(--sidebar-width);
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-toggler {
+                display: block !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stat-card .display-4 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
@@ -46,21 +118,9 @@
                         <a class="nav-link" href="#contacts">Contacts</a>
                     </li>
                 </ul>
-                <a class="btn btn-outline-dark" href="#" data-bs-toggle="modal" data-bs-target="#selectGameModal">CREATE TOURNAMENT</a>
-                <div id="authButtons">
-                    <a class="btn btn-outline-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>
-                    <a class="btn btn-outline-dark" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">SIGNUP</a>
-                </div>
-                <div id="userProfile" style="display: none;">
-                    <div class="dropdown">
-                        <button class="btn btn-outline-dark dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span id="username">User</span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
+                <a class="btn btn-outline-dark" href="#" data-bs-target="modal">CREATE TOURNAMENT</a>
+                <a class="btn btn-outline-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>
+                <a class="btn btn-outline-dark" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">SIGNUP</a>
             </div>
         </div>
     </nav>
@@ -135,15 +195,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="loginAlert" class="alert" role="alert" style="display: none;"></div>
-                    <form id="loginForm">
+                    <form action="handle.php" method="POST">
                         <div class="mb-3">
                             <label for="loginEmail" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="loginEmail" required>
+                            <input type="email" class="form-control" name="loginEmail" id="loginEmail" required>
                         </div>
                         <div class="mb-3">
                             <label for="loginPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="loginPassword" required>
+                            <input type="password" class="form-control" name="loginPassword" id="loginPassword" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Login</button>
                     </form>
@@ -161,19 +220,18 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="signupAlert" class="alert" role="alert" style="display: none;"></div>
-                    <form id="signupForm">
+                    <form action="handle.php" method="POST">
                         <div class="mb-3">
                             <label for="signupName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="signupName" required>
+                            <input type="text" class="form-control" name="signupName" id="signupName" required>
                         </div>
                         <div class="mb-3">
                             <label for="signupEmail" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="signupEmail" required>
+                            <input type="email" class="form-control" name="signupEmail" id="signupEmail" required>
                         </div>
                         <div class="mb-3">
                             <label for="signupPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="signupPassword" required>
+                            <input type="password" class="form-control" name="signupPassword" id="signupPassword" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Signup</button>
                     </form>
@@ -190,10 +248,10 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                  <form>
+                  <form action="" method="POST">
                       <div class="mb-3">
                           <label for="gameSelect" class="form-label">Choose a game:</label>
-                          <select class="form-select" id="gameSelect">
+                          <select class="form-select" name="gameSelect" id="gameSelect" required>
                               <option value="" disabled selected>Select a game</option>
                               <option value="dota">DOTA 2</option>
                               <option value="valorant">VALORANT</option>
@@ -202,7 +260,7 @@
                               <option value="league">League of Legends</option>
                           </select>
                       </div>
-                      <button type="button" class="btn btn-primary">Confirm Selection</button>
+                      <button type="submit" class="btn btn-primary">Confirm Selection</button>
                   </form>
               </div>
           </div>
@@ -232,6 +290,83 @@
                         <img src="./assets/img/dota-2.png" alt="cover">
                         <img src="./assets/img/valorant.png" alt="cover">
                         <img src="./assets/img/codm-removebg-preview.png" alt="cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="user-dashboard d-none" id="userDashboard">
+        <nav class="navbar navbar-expand-lg fixed-top shadow-sm navbar-dark bg-dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler sidebar-toggler d-lg-none me-2" type="button" style="display: none;">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand fw-bold" href="#">D's</a>
+            </div>
+        </nav>
+
+        <button class="btn btn-dark d-lg-none sidebar-toggler position-fixed" style="top: 60px; left: 10px; z-index: 1050;">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <div class="sidebar bg-dark text-white">
+            <div class="text-center mb-4 p-3">
+                <p class="text-muted small mb-2">Pro Player</p>
+                <span class="badge bg-danger">Gold Tier</span>
+            </div>
+            <ul class="nav flex-column px-2">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                </li>
+            </ul>
+            <div class="px-3 py-2 position-absolute bottom-0 start-0 end-0 bg-dark">
+                <button class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#createTournamentModal">
+                    <i class="bi bi-plus-circle"></i> Create Tournament
+                </button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="container-fluid p-3 p-md-4">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card bg-dark text-white">
+                            <div class="card-body">
+                                <h2 class="h4 h1-md">Welcome back, Player!</h2>
+                                <p>Check your upcoming matches and tournament progress.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card stat-card h-100">
+                            <div class="card-body text-center">
+                                <i class="bi bi-trophy fs-1 text-danger mb-2"></i>
+                                <h5 class="card-title">Tournaments Joined</h5>
+                                <h2 class="display-4">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card stat-card h-100">
+                            <div class="card-body text-center">
+                                <i class="bi bi-controller fs-1 text-danger mb-2"></i>
+                                <h5 class="card-title">Matches Played</h5>
+                                <h2 class="display-4">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card stat-card h-100">
+                            <div class="card-body text-center">
+                                <i class="bi bi-award fs-1 text-danger mb-2"></i>
+                                <h5 class="card-title">Tournaments Won</h5>
+                                <h2 class="display-4">0</h2>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -348,169 +483,75 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
     crossorigin="anonymous"></script>
-    
     <script>
-        // Check if user is already logged in
-        document.addEventListener('DOMContentLoaded', function() {
-            checkLoginStatus();
-            
-            // Login form submission
-            document.getElementById('loginForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const email = document.getElementById('loginEmail').value;
-                const password = document.getElementById('loginPassword').value;
-                
-                loginUser(email, password);
+        // Signup functionality
+        document.querySelector('#signupModal form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            if (name && email && password) {
+                localStorage.setItem('user', JSON.stringify({ name, email, password }));
+                alert('Signup successful! You can now log in.');
+                document.getElementById('signupModal').querySelector('.btn-close').click();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+
+        // Login functionality
+        document.querySelector('#loginModal form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+
+            if (storedUser && storedUser.email === email && storedUser.password === password) {
+                alert(`Welcome back, ${storedUser.name}!`);
+                document.getElementById('loginModal').querySelector('.btn-close').click();
+                document.getElementById('userDashboard').classList.remove('d-none');
+                document.getElementById('hero').classList.add('d-none');
+            } else {
+                alert('Invalid email or password.');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+            const tournamentList = document.querySelector('.list-group');
+
+            function refreshTournamentList() {
+                tournamentList.innerHTML = tournaments.length
+                    ? tournaments.map(t => `<div>${t.name}</div>`).join('')
+                    : '<p>No tournaments found</p>';
+            }
+
+            document.getElementById('submitTournament').addEventListener('click', function () {
+                const name = document.getElementById('tournamentName').value;
+                const game = document.getElementById('gameSelect').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                const maxTeams = document.getElementById('maxTeams').value;
+
+                tournaments.push({ name, game, startDate, endDate, maxTeams });
+                localStorage.setItem('tournaments', JSON.stringify(tournaments));
+                refreshTournamentList();
             });
-            
-            // Signup form submission
-            document.getElementById('signupForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('signupName').value;
-                const email = document.getElementById('signupEmail').value;
-                const password = document.getElementById('signupPassword').value;
-                
-                registerUser(name, email, password);
-            });
-            
-            // Logout button click
-            document.getElementById('logoutBtn').addEventListener('click', function(e) {
-                e.preventDefault();
-                logoutUser();
+
+            refreshTournamentList();
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarTogglers = document.querySelectorAll('.sidebar-toggler');
+
+            sidebarTogglers.forEach(toggler => {
+                toggler.addEventListener('click', function () {
+                    sidebar.classList.toggle('active');
+                });
             });
         });
-        
-        // Check if user is logged in
-        function checkLoginStatus() {
-            const currentUser = localStorage.getItem('currentUser');
-            
-            if (currentUser) {
-                const user = JSON.parse(currentUser);
-                document.getElementById('username').textContent = user.name;
-                document.getElementById('authButtons').style.display = 'none';
-                document.getElementById('userProfile').style.display = 'block';
-            } else {
-                document.getElementById('authButtons').style.display = 'block';
-                document.getElementById('userProfile').style.display = 'none';
-            }
-        }
-        
-        // Register a new user
-        function registerUser(name, email, password) {
-            // Get existing users or create empty array
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            
-            // Check if email already exists
-            const emailExists = users.some(user => user.email === email);
-            
-            if (emailExists) {
-                showAlert('signupAlert', 'Email already registered!', 'danger');
-                return;
-            }
-            
-            // Create new user object
-            const newUser = {
-                id: Date.now().toString(),
-                name: name,
-                email: email,
-                password: password  // In a real app, this should be encrypted
-            };
-            
-            // Add user to array
-            users.push(newUser);
-            
-            // Save updated users array
-            localStorage.setItem('users', JSON.stringify(users));
-            
-            // Set current user
-            localStorage.setItem('currentUser', JSON.stringify(newUser));
-            
-            // Show success message
-            showAlert('signupAlert', 'Registration successful!', 'success');
-            
-            // Close modal after short delay and redirect
-            setTimeout(() => {
-                const modal = bootstrap.Modal.getInstance(document.getElementById('signupModal'));
-                modal.hide();
-                window.location.href = './index.html';
-            }, 1500);
-        }
-        
-        // Login user
-        function loginUser(email, password) {
-            // Get users from local storage
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            
-            // Find user with matching email and password
-            const user = users.find(user => user.email === email && user.password === password);
-            
-            if (user) {
-                // Set current user
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                
-                // Show success message
-                showAlert('loginAlert', 'Login successful!', 'success');
-                
-                // Close modal after short delay and redirect to index.html
-                setTimeout(() => {
-                    window.location.href = './index.html';
-                }, 1500);
-            } else {
-                showAlert('loginAlert', 'Invalid email or password!', 'danger');
-            }
-        }
-        
-        // Logout user
-        function logoutUser() {
-            // Remove current user from local storage
-            localStorage.removeItem('currentUser');
-            
-            // Update UI
-            checkLoginStatus();
-            
-            // Create and show toast notification
-            const toastContainer = document.createElement('div');
-            toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
-            toastContainer.style.zIndex = '11';
-            
-            toastContainer.innerHTML = `
-                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header">
-                        <strong class="me-auto">D's Esports</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        You have been logged out successfully!
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(toastContainer);
-            
-            const toastElement = toastContainer.querySelector('.toast');
-            const toast = new bootstrap.Toast(toastElement);
-            toast.show();
-            
-            // Remove toast container after toast is hidden
-            toastElement.addEventListener('hidden.bs.toast', function () {
-                toastContainer.remove();
-            });
-        }
-        
-        // Show alert message
-        function showAlert(elementId, message, type) {
-            const alert = document.getElementById(elementId);
-            alert.className = `alert alert-${type}`;
-            alert.textContent = message;
-            alert.style.display = 'block';
-            
-            // Hide alert after 3 seconds
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 3000);
-        }
     </script>
 </body>
 </html>
