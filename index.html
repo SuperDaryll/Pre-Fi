@@ -128,7 +128,7 @@
                         <a class="nav-link" href="#contacts">Contacts</a>
                     </li>
                 </ul>
-                <a class="btn btn-outline-dark" href="#" data-bs-target="modal">CREATE TOURNAMENT</a>
+                <a class="btn btn-outline-dark" href="#" id="createTournamentButton">CREATE TOURNAMENT</a>
                 <a class="btn btn-outline-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>
                 <a class="btn btn-outline-dark" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">SIGNUP</a>
             </div>
@@ -275,6 +275,49 @@
               </div>
           </div>
       </div>
+    </div>
+    <!-- Create Tournament Modal -->
+    <div class="modal fade" id="createTournamentModal" tabindex="-1" aria-labelledby="createTournamentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createTournamentModalLabel">Create Tournament</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createTournamentForm">
+                        <div class="mb-3">
+                            <label for="tournamentName" class="form-label">Tournament Name</label>
+                            <input type="text" class="form-control" id="tournamentName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gameSelect" class="form-label">Game</label>
+                            <select class="form-select" id="gameSelect" required>
+                                <option value="" disabled selected>Select a game</option>
+                                <option value="dota">DOTA 2</option>
+                                <option value="valorant">VALORANT</option>
+                                <option value="codm">Call of Duty Mobile</option>
+                                <option value="fortnite">Fortnite</option>
+                                <option value="league">League of Legends</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="startDate" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="startDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="endDate" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="endDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="maxTeams" class="form-label">Maximum Teams</label>
+                            <input type="number" class="form-control" id="maxTeams" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <section class="hero" id="hero">
         <div class="container-lg con">
@@ -579,6 +622,48 @@
                     sidebar.classList.toggle('active');
                 });
             });
+        });
+
+        // Create Tournament functionality
+        document.getElementById('createTournamentForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const tournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+            const name = document.getElementById('tournamentName').value;
+            const game = document.getElementById('gameSelect').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const maxTeams = document.getElementById('maxTeams').value;
+
+            tournaments.push({ name, game, startDate, endDate, maxTeams });
+            localStorage.setItem('tournaments', JSON.stringify(tournaments));
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Tournament Created!',
+                text: 'Your tournament has been successfully created.',
+            }).then(() => {
+                document.getElementById('createTournamentModal').querySelector('.btn-close').click();
+                document.getElementById('createTournamentForm').reset();
+            });
+        });
+
+        // Redirect to login if not logged in
+        document.getElementById('createTournamentButton').addEventListener('click', function (e) {
+            e.preventDefault();
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+            if (!storedUser) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Login Required',
+                    text: 'Please log in to create a tournament.',
+                }).then(() => {
+                    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                    loginModal.show();
+                });
+            } else {
+                const createTournamentModal = new bootstrap.Modal(document.getElementById('createTournamentModal'));
+                createTournamentModal.show();
+            }
         });
     </script>
 </body>
