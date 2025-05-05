@@ -421,6 +421,16 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Tournaments Section -->
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="text-white">Your Tournaments</h3>
+                        <ul class="list-group" id="tournamentList">
+                            <!-- Tournaments will be dynamically loaded here -->
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -643,6 +653,7 @@
             }).then(() => {
                 document.getElementById('createTournamentModal').querySelector('.btn-close').click();
                 document.getElementById('createTournamentForm').reset();
+                loadTournaments(); // Refresh the tournament list
             });
         });
 
@@ -663,6 +674,82 @@
                 const createTournamentModal = new bootstrap.Modal(document.getElementById('createTournamentModal'));
                 createTournamentModal.show();
             }
+        });
+
+        // Load tournaments into the dashboard
+        function loadTournaments() {
+            const tournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+            const tournamentList = document.getElementById('tournamentList');
+            tournamentList.innerHTML = tournaments.length
+                ? tournaments.map((t, index) => `
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>${t.name}</strong> - ${t.game} <br>
+                            <small>Start: ${t.startDate}, End: ${t.endDate}, Max Teams: ${t.maxTeams}</small>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-warning me-2" onclick="editTournament(${index})">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteTournament(${index})">Delete</button>
+                        </div>
+                    </li>
+                `).join('')
+                : '<li class="list-group-item">No tournaments created yet.</li>';
+        }
+
+        // Delete a tournament
+        function deleteTournament(index) {
+            const tournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+            tournaments.splice(index, 1);
+            localStorage.setItem('tournaments', JSON.stringify(tournaments));
+            loadTournaments();
+            Swal.fire({
+                icon: 'success',
+                title: 'Tournament Deleted!',
+                text: 'The tournament has been successfully deleted.',
+            });
+        }
+
+        // Edit a tournament
+        function editTournament(index) {
+            const tournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+            const tournament = tournaments[index];
+
+            // Pre-fill the form with the tournament data
+            document.getElementById('tournamentName').value = tournament.name;
+            document.getElementById('gameSelect').value = tournament.game;
+            document.getElementById('startDate').value = tournament.startDate;
+            document.getElementById('endDate').value = tournament.endDate;
+            document.getElementById('maxTeams').value = tournament.maxTeams;
+
+            // Show the modal
+            const createTournamentModal = new bootstrap.Modal(document.getElementById('createTournamentModal'));
+            createTournamentModal.show();
+
+            // Update the form submission to save changes
+            const form = document.getElementById('createTournamentForm');
+            form.onsubmit = function (e) {
+                e.preventDefault();
+                tournaments[index] = {
+                    name: document.getElementById('tournamentName').value,
+                    game: document.getElementById('gameSelect').value,
+                    startDate: document.getElementById('startDate').value,
+                    endDate: document.getElementById('endDate').value,
+                    maxTeams: document.getElementById('maxTeams').value,
+                };
+                localStorage.setItem('tournaments', JSON.stringify(tournaments));
+                createTournamentModal.hide();
+                loadTournaments();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Tournament Updated!',
+                    text: 'The tournament has been successfully updated.',
+                });
+            };
+        }
+
+        // Refresh tournaments on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            loadTournaments();
         });
     </script>
 </body>
