@@ -1,6 +1,12 @@
 <?php
 session_start();
 $user = $_SESSION['user'] ?? null;
+
+// Connect to DB and fetch tournaments
+$mysqli = new mysqli("localhost", "root", "", "prefi_db");
+$tournaments = [];
+$res = $mysqli->query("SELECT id, name, start_date, prize FROM tournaments ORDER BY start_date ASC LIMIT 3");
+while ($row = $res->fetch_assoc()) $tournaments[] = $row;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,27 +74,24 @@ $user = $_SESSION['user'] ?? null;
     <div class="container">
         <h2 class="section-title mb-4">Upcoming Tournaments</h2>
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card p-3 h-100">
-                    <h5 class="card-title">DOTA 2: Battle Royale</h5>
-                    <p class="card-text">Starts: 2025-06-10<br>Prize: $5,000</p>
-                    <a href="#" class="btn btn-main btn-sm">View Details</a>
+            <?php if (count($tournaments)): ?>
+                <?php foreach($tournaments as $t): ?>
+                <div class="col-md-4">
+                    <div class="card p-3 h-100">
+                        <h5 class="card-title"><?=htmlspecialchars($t['name'])?></h5>
+                        <p class="card-text">
+                            Starts: <?=htmlspecialchars($t['start_date'])?><br>
+                            Prize: <?=htmlspecialchars($t['prize'])?>
+                        </p>
+                        <a href="tournament_details.php?id=<?=$t['id']?>" class="btn btn-main btn-sm">View Details</a>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card p-3 h-100">
-                    <h5 class="card-title">VALORANT: Champions Cup</h5>
-                    <p class="card-text">Starts: 2025-06-15<br>Prize: $3,000</p>
-                    <a href="#" class="btn btn-main btn-sm">View Details</a>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="col-12">
+                    <div class="alert alert-secondary text-center">No tournaments available.</div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card p-3 h-100">
-                    <h5 class="card-title">CODM: Mobile Masters</h5>
-                    <p class="card-text">Starts: 2025-06-20<br>Prize: $2,000</p>
-                    <a href="#" class="btn btn-main btn-sm">View Details</a>
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
