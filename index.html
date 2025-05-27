@@ -555,13 +555,28 @@
             const password = document.getElementById('signupPassword').value;
 
             if (name && email && password) {
-                localStorage.setItem('user', JSON.stringify({ name, email, password }));
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Signup successful!',
-                    text: 'You can now log in.',
-                }).then(() => {
-                    document.getElementById('signupModal').querySelector('.btn-close').click();
+                fetch('handle.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `action=signup&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Signup successful!',
+                            text: 'You can now log in.',
+                        }).then(() => {
+                            document.getElementById('signupModal').querySelector('.btn-close').click();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: data.message || 'Signup failed.',
+                        });
+                    }
                 });
             } else {
                 Swal.fire({
@@ -577,24 +592,31 @@
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-            const storedUser = JSON.parse(localStorage.getItem('user'));
 
-            if (storedUser && storedUser.email === email && storedUser.password === password) {
-                Swal.fire({
-                    icon: 'success',
-                    title: `Welcome back, ${storedUser.name}!`,
-                }).then(() => {
-                    document.getElementById('loginModal').querySelector('.btn-close').click();
-                    document.getElementById('userDashboard').classList.remove('d-none');
-                    document.getElementById('hero').classList.add('d-none');
-                    document.querySelector('#userDashboard .h1-md').textContent = `Welcome back, ${storedUser.name}!`;
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Invalid email or password.',
-                });
-            }
+            fetch('handle.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: `Welcome back, ${data.name}!`,
+                    }).then(() => {
+                        document.getElementById('loginModal').querySelector('.btn-close').click();
+                        document.getElementById('userDashboard').classList.remove('d-none');
+                        document.getElementById('hero').classList.add('d-none');
+                        document.querySelector('#userDashboard .h1-md').textContent = `Welcome back, ${data.name}!`;
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid email or password.',
+                    });
+                }
+            });
         });
 
         document.addEventListener('DOMContentLoaded', function () {
