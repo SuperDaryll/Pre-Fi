@@ -1,22 +1,17 @@
 <?php
 session_start();
 $user = $_SESSION['user'] ?? null;
-
-// Connect to DB and fetch tournaments
-$mysqli = new mysqli("localhost", "root", "", "prefi_db");
-$tournaments = [];
-$res = $mysqli->query("SELECT id, name, start_date, prize FROM tournaments ORDER BY start_date ASC LIMIT 3");
-while ($row = $res->fetch_assoc()) $tournaments[] = $row;
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>eSports Arena</title>
+    <title>eSports Arena</title> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         body { background: #181a1b; color: #fff; font-family: 'Poppins', sans-serif; }
         .navbar { background: #222; }
@@ -28,9 +23,33 @@ while ($row = $res->fetch_assoc()) $tournaments[] = $row;
         .btn-main { background: #ff0057; color: #fff; border: none; }
         .btn-main:hover { background: #d9004c; }
         .profile-pic { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
-        .modal-content {
-    color: #212529 !important;
-}
+        .modal-content { color: #212529 !important; }
+        .tournament-card {
+            background: linear-gradient(135deg, #23272b 80%, #181a1b 100%);
+            color: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #343a40;
+            box-shadow: 0 4px 16px 0 rgba(0,0,0,0.25);
+            padding: 24px 20px;
+            margin-bottom: 18px;
+            transition: box-shadow 0.2s;
+        }
+        .tournament-card:hover {
+            box-shadow: 0 8px 32px 0 rgba(255,0,87,0.10), 0 1.5px 0 #ff0057 inset;
+        }
+        .tournament-title {
+            color: #ff0057;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        .tournament-date {
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+        .tournament-prize {
+            color: #ffd700;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -47,6 +66,9 @@ while ($row = $res->fetch_assoc()) $tournaments[] = $row;
                 <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 <?php if($user): ?>
+                    <?php if(!empty($user['is_admin'])): ?>
+                        <li class="nav-item"><a class="nav-link" href="admin.php"><i class="bi bi-shield-lock"></i> Admin</a></li>
+                    <?php endif; ?>
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="bi bi-person-circle"></i> <?=htmlspecialchars($user['name'])?></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                 <?php else: ?>
@@ -73,25 +95,8 @@ while ($row = $res->fetch_assoc()) $tournaments[] = $row;
 <section class="py-5" id="tournaments">
     <div class="container">
         <h2 class="section-title mb-4">Upcoming Tournaments</h2>
-        <div class="row g-4">
-            <?php if (count($tournaments)): ?>
-                <?php foreach($tournaments as $t): ?>
-                <div class="col-md-4">
-                    <div class="card p-3 h-100">
-                        <h5 class="card-title"><?=htmlspecialchars($t['name'])?></h5>
-                        <p class="card-text">
-                            Starts: <?=htmlspecialchars($t['start_date'])?><br>
-                            Prize: <?=htmlspecialchars($t['prize'])?>
-                        </p>
-                        <a href="tournament_details.php?id=<?=$t['id']?>" class="btn btn-main btn-sm">View Details</a>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="col-12">
-                    <div class="alert alert-secondary text-center">No tournaments available.</div>
-                </div>
-            <?php endif; ?>
+        <div class="row g-4" id="tournaments-container">
+            <!-- Tournament data will be rendered here by JS -->
         </div>
     </div>
 </section>
@@ -232,5 +237,30 @@ while ($row = $res->fetch_assoc()) $tournaments[] = $row;
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Fetch and display upcoming tournaments
+    axios.get('api.php?action=tournaments')
+      .then(function (response) {
+        const tournaments = response.data;
+        if (!tournaments.length) {
+            document.getElementById('tournaments-container').innerHTML = '<div class="alert alert-warning bg-dark text-white border-0">No upcoming tournaments.</div>';
+            return;
+        }
+        let html = '';
+        tournaments.forEach(function(t) {
+          html += `
+            <div class="tournament-card">
+                <div class="tournament-title">${t.name}</div>
+                <div class="tournament-date">Start: ${t.start_date}</div>
+                <div class="tournament-prize">Prize: ${t.prize}</div>
+            </div>
+          `;
+        });
+        document.getElementById('tournaments-container').innerHTML = html;
+      })
+      .catch(function (error) {
+        document.getElementById('tournaments-container').innerHTML = '<div class="alert alert-danger">Failed to load tournaments.</div>';
+      });
+</script>
 </body>
 </html>

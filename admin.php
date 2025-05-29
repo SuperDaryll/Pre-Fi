@@ -21,7 +21,7 @@ while ($row = $res->fetch_assoc()) $tournaments[] = $row;
 $matches = [];
 $res = $mysqli->query("SELECT id, tournament_id, match_time, referee, result FROM matches");
 while ($row = $res->fetch_assoc()) $matches[] = $row;
-?>
+?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,6 +38,43 @@ while ($row = $res->fetch_assoc()) $matches[] = $row;
         .table-dark th, .table-dark td { color: #fff; }
         .badge-admin { background: #2b2bff; }
         .badge-banned { background: #d9004c; }
+        .enhanced-modal {
+            background: linear-gradient(135deg, #23272b 80%, #181a1b 100%);
+            color: #fff;
+            border-radius: 18px;
+            border: 1.5px solid #343a40;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.45), 0 1.5px 0 #ff0057 inset;
+            padding: 0 8px;
+        }
+        .enhanced-modal .modal-title {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .enhanced-input {
+            background: #23272b;
+            color: #fff;
+            border: 1.5px solid #343a40;
+            border-radius: 8px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: none;
+        }
+        .enhanced-input:focus {
+            border-color: #ff0057;
+            box-shadow: 0 0 0 2px rgba(255,0,87,0.15);
+            background: #23272b;
+            color: #fff;
+        }
+        .enhanced-btn {
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px 0 rgba(255,0,87,0.10);
+            border-radius: 8px;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+        .modal-header, .modal-footer {
+            background: transparent;
+        }
     </style>
 </head>
 <body>
@@ -100,7 +137,8 @@ while ($row = $res->fetch_assoc()) $matches[] = $row;
     <!-- Tournament Management -->
     <div class="admin-section">
         <h3>Tournament Management</h3>
-        <a href="create_tournament.php" class="btn btn-main mb-3">Create Tournament</a>
+        <!-- Button triggers modal -->
+        <button class="btn btn-main mb-3" data-bs-toggle="modal" data-bs-target="#createTournamentModal">Create Tournament</button>
         <div class="table-responsive">
             <table class="table table-dark table-striped align-middle">
                 <thead>
@@ -118,7 +156,6 @@ while ($row = $res->fetch_assoc()) $matches[] = $row;
                         <td>
                             <a href="edit_tournament.php?id=<?=$t['id']?>" class="btn btn-sm btn-secondary">Edit</a>
                             <a href="delete_tournament.php?id=<?=$t['id']?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete tournament?')">Delete</a>
-                            <a href="participants.php?tournament_id=<?=$t['id']?>" class="btn btn-sm btn-info">Participants</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -130,7 +167,8 @@ while ($row = $res->fetch_assoc()) $matches[] = $row;
     <!-- Match Scheduling -->
     <div class="admin-section">
         <h3>Match Scheduling</h3>
-        <a href="create_match.php" class="btn btn-main mb-3">Schedule Match</a>
+        <!-- Button triggers modal -->
+        <button class="btn btn-main mb-3" data-bs-toggle="modal" data-bs-target="#scheduleMatchModal">Schedule Match</button>
         <div class="table-responsive">
             <table class="table table-dark table-striped align-middle">
                 <thead>
@@ -149,7 +187,6 @@ while ($row = $res->fetch_assoc()) $matches[] = $row;
                         <td>
                             <a href="edit_match.php?id=<?=$m['id']?>" class="btn btn-sm btn-secondary">Edit</a>
                             <a href="delete_match.php?id=<?=$m['id']?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete match?')">Delete</a>
-                            <a href="update_result.php?id=<?=$m['id']?>" class="btn btn-sm btn-success">Update Result</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -158,5 +195,74 @@ while ($row = $res->fetch_assoc()) $matches[] = $row;
         </div>
     </div>
 </div>
+
+<!-- Create Tournament Modal -->
+<div class="modal fade" id="createTournamentModal" tabindex="-1" aria-labelledby="createTournamentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <form class="modal-content enhanced-modal" method="post" action="create_tournament.php">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title" id="createTournamentModalLabel">Create Tournament</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-2">
+        <div class="mb-3">
+          <label for="tournamentName" class="form-label">Name</label>
+          <input type="text" class="form-control enhanced-input" id="tournamentName" name="name" required>
+        </div>
+        <div class="mb-3">
+          <label for="tournamentStartDate" class="form-label">Start Date</label>
+          <input type="date" class="form-control enhanced-input" id="tournamentStartDate" name="start_date" required>
+        </div>
+        <div class="mb-3">
+          <label for="tournamentPrize" class="form-label">Prize</label>
+          <input type="text" class="form-control enhanced-input" id="tournamentPrize" name="prize" required>
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-main enhanced-btn">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Schedule Match Modal -->
+<div class="modal fade" id="scheduleMatchModal" tabindex="-1" aria-labelledby="scheduleMatchModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <form class="modal-content enhanced-modal" method="post" action="create_match.php">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title" id="scheduleMatchModalLabel">Schedule Match</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-2">
+        <div class="mb-3">
+          <label for="matchTournament" class="form-label">Tournament</label>
+          <select class="form-select enhanced-input" id="matchTournament" name="tournament_id" required>
+            <option value="" disabled selected>Select tournament</option>
+            <?php foreach($tournaments as $t): ?>
+              <option value="<?=$t['id']?>"><?=htmlspecialchars($t['name'])?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="matchTime" class="form-label">Match Time</label>
+          <input type="datetime-local" class="form-control enhanced-input" id="matchTime" name="match_time" required>
+        </div>
+        <div class="mb-3">
+          <label for="matchReferee" class="form-label">Referee</label>
+          <input type="text" class="form-control enhanced-input" id="matchReferee" name="referee" required>
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-main enhanced-btn">Schedule</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
