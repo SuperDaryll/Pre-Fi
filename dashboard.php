@@ -29,6 +29,9 @@ if (!$user) {
     <div class="container">
         <a class="navbar-brand fw-bold" href="index.php"><i class="bi bi-controller"></i> eSports Arena</a>
         <div class="ms-auto">
+            <?php if($user && !empty($user['is_admin'])): ?>
+                <a href="admin.php" class="btn btn-warning me-2">Admin Panel</a>
+            <?php endif; ?>
             <a href="logout.php" class="btn btn-main">Logout</a>
         </div>
     </div>

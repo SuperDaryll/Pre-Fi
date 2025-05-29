@@ -21,7 +21,7 @@ while ($row = $res->fetch_assoc()) $tournaments[] = $row;
 $matches = [];
 $res = $mysqli->query("SELECT id, tournament_id, match_time, referee, result FROM matches");
 while ($row = $res->fetch_assoc()) $matches[] = $row;
-?>
+?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>

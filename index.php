@@ -12,7 +12,7 @@ while ($row = $res->fetch_assoc()) $tournaments[] = $row;
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>eSports Arena</title>
+    <title>eSports Arena</title> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -28,9 +28,7 @@ while ($row = $res->fetch_assoc()) $tournaments[] = $row;
         .btn-main { background: #ff0057; color: #fff; border: none; }
         .btn-main:hover { background: #d9004c; }
         .profile-pic { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
-        .modal-content {
-    color: #212529 !important;
-}
+        .modal-content { color: #212529 !important; }
     </style>
 </head>
 <body>
@@ -47,6 +45,9 @@ while ($row = $res->fetch_assoc()) $tournaments[] = $row;
                 <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 <?php if($user): ?>
+                    <?php if(!empty($user['is_admin'])): ?>
+                        <li class="nav-item"><a class="nav-link" href="admin.php"><i class="bi bi-shield-lock"></i> Admin</a></li>
+                    <?php endif; ?>
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="bi bi-person-circle"></i> <?=htmlspecialchars($user['name'])?></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                 <?php else: ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2025 at 12:37 PM
+-- Generation Time: May 29, 2025 at 05:56 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,33 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `matches`
+--
+
+CREATE TABLE `matches` (
+  `id` int(11) NOT NULL,
+  `tournament_id` int(11) NOT NULL,
+  `match_time` datetime NOT NULL,
+  `referee` varchar(100) DEFAULT NULL,
+  `result` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tournaments`
+--
+
+CREATE TABLE `tournaments` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `start_date` date NOT NULL,
+  `prize` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -37,8 +64,29 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `is_admin`, `is_banned`) VALUES
+(1, 'Sanly Sinday', 'sanly@gmail.com', '$2y$10$7/BLm/XIFDmVze9L0seaOuGWshU8Unlt/l2MAlI3gppvcXNvC9upG', 0, 0),
+(3, 'Admin User', 'admin@email.com', '$2y$10$.Mbf.7kMwBv4KA3M5Vcr1O9sB9WDclgoZOyscbeP4E7lUp85UOfrC', 1, 0);
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `matches`
+--
+ALTER TABLE `matches`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tournament_id` (`tournament_id`);
+
+--
+-- Indexes for table `tournaments`
+--
+ALTER TABLE `tournaments`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -52,36 +100,32 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `matches`
 --
-ALTER TABLE `users`
+ALTER TABLE `matches`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Table structure for table `tournaments`
+-- AUTO_INCREMENT for table `tournaments`
 --
-
-CREATE TABLE `tournaments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `start_date` date NOT NULL,
-  `prize` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ALTER TABLE `tournaments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Table structure for table `matches`
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Constraints for dumped tables
 --
 
-CREATE TABLE `matches` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tournament_id` int(11) NOT NULL,
-  `match_time` datetime NOT NULL,
-  `referee` varchar(100) DEFAULT NULL,
-  `result` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`tournament_id`) REFERENCES `tournaments`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+--
+-- Constraints for table `matches`
+--
+ALTER TABLE `matches`
+  ADD CONSTRAINT `matches_ibfk_1` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

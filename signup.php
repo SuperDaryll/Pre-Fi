@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: index.php?error=missing_fields");
         exit;
     }
-
+ 
     // Check if email exists
     $stmt = $mysqli->prepare("SELECT id FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
@@ -25,13 +25,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Insert user
     $hash = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $mysqli->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $name, $email, $hash);
+    $is_admin = 0;
+    $is_banned = 0;
+    $stmt = $mysqli->prepare("INSERT INTO users (name, email, password, is_admin, is_banned) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssii", $name, $email, $hash, $is_admin, $is_banned);
     $stmt->execute();
     $stmt->close();
 
-    $_SESSION['user'] = ['name' => $name, 'email' => $email];
-    header("Location: index.php");
+    $_SESSION['user'] = ['name' => $name, 'email' => $email, 'is_admin' => 0];
+    header("Location: dashboard.php");
     exit;
 }
 header("Location: index.php");
