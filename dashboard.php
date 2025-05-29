@@ -2,7 +2,7 @@
 
 session_start();
 $user = $_SESSION['user'] ?? null;
-if (!$user) {
+if (!$user) { 
     header("Location: index.php");
     exit;
 }
